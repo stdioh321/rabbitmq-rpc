@@ -8,6 +8,7 @@ if(!id || id?.length < 1) return process.exit(1)
 amqp.connect('amqp://localhost:5672', (err, conn) => {
 
     conn.createChannel((err, ch) => {
+        ch.assertQueue('rpc_queue', {durable: false})
         ch.assertQueue('', { exclusive: true }, (err, q) => {
 
             const corr = uuid();
@@ -23,7 +24,6 @@ amqp.connect('amqp://localhost:5672', (err, conn) => {
                     console.log(` [.] Got ${msg.content.toString()}`);
                     setTimeout(function () { conn.close(); process.exit(0) }, 500);
                 }
-                console.log("consuming.....");
             }, { noAck: true });
 
 

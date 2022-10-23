@@ -18,7 +18,7 @@ amqp.connect('amqp://localhost:5672', (err, conn) => {
             // {sua logica}
 
             ch.sendToQueue(msg.properties.replyTo,
-                new Buffer(`result_${id}`),
+                Buffer.from(`result_${id}`),
                 { correlationId: msg.properties.correlationId });
 
             ch.ack(msg);
