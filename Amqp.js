@@ -41,9 +41,9 @@ module.exports = class Amqp {
     const queueName = [exchange,routingKey].filter(it=>it).join('-')
     ch.prefetch(2)
     ch.assertExchange(exchange, 'direct', { durable: true })
-    ch.assertQueue(queueName, {exclusive: false}, function(error1, q){
+    ch.assertQueue('mario', {exclusive: false}, function(error1, q){
       console.log({q});
-      ch.bindQueue(q.queue, exchange, queueName)
+      ch.bindQueue(q.queue, exchange, q.queue)
       ch.consume(q.queue, (msg)=>{
         event.emit('message', msg)
       },{
@@ -57,7 +57,8 @@ module.exports = class Amqp {
     return new Promise((resolve, reject) => {
       ch.assertExchange(exchange, 'direct', { durable: true })
     const routingKeyName = [exchange, routingKey].filter(it=>it).join('-')
-    ch.publish(exchange, routingKeyName, Buffer.from(content),{
+    
+    ch.publish(exchange, 'mario', Buffer.from(content),{
       persistent: true,
     });
     return resolve();
