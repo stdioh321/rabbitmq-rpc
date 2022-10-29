@@ -43,7 +43,7 @@ module.exports = class Amqp {
     ch.assertExchange(exchange, 'direct', { durable: true })
     ch.assertQueue(queueName, {exclusive: false}, function(error1, q){
       console.log({q});
-      // ch.bindQueue(q.queue, exchange, queueName)
+      ch.bindQueue(q.queue, exchange, queueName)
       ch.consume(q.queue, (msg)=>{
         event.emit('message', msg)
       },{
